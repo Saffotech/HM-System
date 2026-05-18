@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import Base, engine
 from Routers import auth
+from Routers.roles import router as roles_router  # ← add this
+from Models import user, role
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Hospital Management API")
@@ -20,6 +23,8 @@ app.add_middleware(
 )
 
 app.include_router(auth.router)
+app.include_router(roles_router)  # ← add this
+
 @app.get("/")
 def home():
-    return {"message":"Hospital api running.."}
+    return {"message": "Hospital api running.."}
