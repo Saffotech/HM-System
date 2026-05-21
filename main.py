@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import Base, engine
+from database import Base, engine, SessionLocal
 from Routers import auth
 from Routers.roles import router as roles_router  # ← add this
 from Models import user, role
+from Models import appointment
 
 Base.metadata.create_all(bind=engine)
 
@@ -15,7 +16,7 @@ app.add_middleware(
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:4173",
-        "http://127.0.0.1:4173",
+        "http://127.0.0.1:4173", 
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -28,3 +29,9 @@ app.include_router(roles_router)  # ← add this
 @app.get("/")
 def home():
     return {"message": "Hospital api running.."}
+
+from Routers.doctor import (
+    router as appointments_router
+)
+
+app.include_router(appointments_router)
