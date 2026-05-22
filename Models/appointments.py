@@ -24,6 +24,8 @@ class Appointment(Base):
     # temporary without foreign key
     patient_id = Column(Integer, nullable=False)
 
+    patient_name = Column(String,nullable=False)
+
     doctor_id = Column(
         Integer,
         ForeignKey("users.id"),

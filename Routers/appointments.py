@@ -8,7 +8,7 @@ from dependencies import (
 )
 
 from Models.user import User
-from Models.appointment import Appointment
+from Models.appointments import Appointment
 
 
 router = APIRouter(

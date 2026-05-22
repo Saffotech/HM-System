@@ -4,7 +4,7 @@ from database import Base, engine, SessionLocal
 from Routers import auth
 from Routers.roles import router as roles_router  # ← add this
 from Models import user, role
-from Models import appointment
+from Models import appointments
 
 Base.metadata.create_all(bind=engine)
 
@@ -30,7 +30,7 @@ app.include_router(roles_router)  # ← add this
 def home():
     return {"message": "Hospital api running.."}
 
-from Routers.doctor import (
+from Routers.appointments import (
     router as appointments_router
 )
 
