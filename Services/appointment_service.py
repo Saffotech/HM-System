@@ -1,9 +1,6 @@
 from datetime import date
-
 from fastapi import HTTPException
-
 from sqlalchemy.orm import Session
-
 from Models.appointments import Appointment
 
 
@@ -11,32 +8,20 @@ from Models.appointments import Appointment
 # Get Today's Appointments
 # ==========================================================
 
-def get_today_appointments_service(
-
-    db: Session,
-
-    doctor_id: int
-):
+def get_today_appointments_service(db: Session,doctor_id: int):
 
     appointments = (
-
         db.query(Appointment)
-
         .filter(
             Appointment.doctor_id == doctor_id,
             Appointment.appointment_date == date.today()
         )
-
         .order_by(
             Appointment.appointment_time.asc()
-        )
-
-        .all()
+        ).all()
     )
 
-    return {"total appointments" : len(appointments) ,
-
-        "appointments" : appointments}
+    return appointments
 
 
 # ==========================================================
@@ -46,22 +31,16 @@ def get_today_appointments_service(
 def get_appointment_by_id_service(
 
     db: Session,
-
     appointment_id: int,
-
     doctor_id: int
 ):
 
     appointment = (
-
         db.query(Appointment)
-
         .filter(
             Appointment.id == appointment_id,
             Appointment.doctor_id == doctor_id
-        )
-
-        .first()
+        ).first()
     )
 
     if not appointment:
@@ -81,11 +60,8 @@ def get_appointment_by_id_service(
 def update_appointment_status_service(
 
     db: Session,
-
     appointment_id: int,
-
     doctor_id: int,
-
     status: str
 ):
 
@@ -104,15 +80,11 @@ def update_appointment_status_service(
         )
 
     appointment = (
-
         db.query(Appointment)
-
         .filter(
             Appointment.id == appointment_id,
             Appointment.doctor_id == doctor_id
-        )
-
-        .first()
+        ).first()
     )
 
     if not appointment:
@@ -123,11 +95,8 @@ def update_appointment_status_service(
         )
 
     appointment.status = status
-
     db.commit()
-
     db.refresh(appointment)
-
     return appointment
 
 
@@ -135,32 +104,21 @@ def update_appointment_status_service(
 # Appointment History
 # ==========================================================
 
-def get_appointment_history_service(
-
-    db: Session,
-
-    doctor_id: int
-):
+def get_appointment_history_service(db: Session,doctor_id: int):
 
     appointments = (
-
         db.query(Appointment)
-
         .filter(
             Appointment.doctor_id == doctor_id,
             Appointment.appointment_date < date.today()
         )
-
         .order_by(
             Appointment.appointment_date.desc()
-        )
-
-        .all()
+        ).all()
     )
 
-    return {"total appointments" : len(appointments),
-        "appointments" : appointments
-            }
+    return appointments
+
 
 
 # ==========================================================
@@ -170,26 +128,19 @@ def get_appointment_history_service(
 def get_appointments_by_date_service(
 
     db: Session,
-
     doctor_id: int,
-
     appointment_date: date
 ):
 
     appointments = (
-
         db.query(Appointment)
-
         .filter(
             Appointment.doctor_id == doctor_id,
             Appointment.appointment_date == appointment_date
         )
-
         .order_by(
             Appointment.appointment_time.asc()
-        )
-
-        .all()
+        ).all()
     )
 
     return appointments
